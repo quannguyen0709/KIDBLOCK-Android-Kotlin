@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="Jacarta">#FF3C315A</color>
+    <color name="Jade">#FF00BD6E</color>
+    <color name="DarkViolet">#FF8C00CE</color>
+    <color name="LightningYellow">#FFFA9620</color>
+    <color name="DodgerBlue">#FF2092FA</color>
+    <color name="OrangeRed">#FFFF3E13</color>
+    <color name="SealBrown">#FF000000</color>
+</resources>
