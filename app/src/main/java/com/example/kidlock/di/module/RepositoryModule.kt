@@ -1,6 +1,5 @@
 package com.example.kidlock.di.module
 
-import com.example.kidlock.data.repository.AccountRepository
 import com.example.kidlock.domain.repository.AccountRepositoryInterface
 import dagger.Binds
 import dagger.Module

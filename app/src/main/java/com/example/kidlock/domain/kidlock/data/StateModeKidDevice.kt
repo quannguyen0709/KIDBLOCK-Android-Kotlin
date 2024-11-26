@@ -1,7 +1,7 @@
 package com.example.kidlock.domain.kidlock.data
 
 sealed class StateModeKidDevice {
-    class Parent: StateModeKidDevice()
-    class Child: StateModeKidDevice()
-    class Lock: StateModeKidDevice()
+    data class Parent(val parent:String): StateModeKidDevice()
+    data class Child(val child: String): StateModeKidDevice()
+    data class Lock(val lock: String): StateModeKidDevice()
 }
