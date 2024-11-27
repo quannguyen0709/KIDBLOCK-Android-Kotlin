@@ -11,5 +11,5 @@ data class KidInforWithHistory(
         parentColumn = "kid_infor_id",
         entityColumn = "id"
     )
-    val history:Array<HistoryActionOfKidEntity>?
+    val history:String
 )

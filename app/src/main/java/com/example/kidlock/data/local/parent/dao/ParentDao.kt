@@ -5,6 +5,6 @@ import androidx.room.Insert
 import com.example.kidlock.data.local.DaoGeneric
 import com.example.kidlock.data.local.parent.entity.ParentUserEntity
 
-
-interface ParentDao: DaoGeneric<ParentUserEntity> {
+@Dao
+public abstract class ParentDao: DaoGeneric<ParentUserEntity>() {
 }

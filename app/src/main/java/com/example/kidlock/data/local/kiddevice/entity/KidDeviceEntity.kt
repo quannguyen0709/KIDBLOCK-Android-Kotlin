@@ -12,12 +12,12 @@ data class KidDeviceEntity(
     @ColumnInfo(name = "name_device")
       val name: String,
     @ColumnInfo(name = "state_mode_kid_device")
-      val stateMode: StateModeKidDevice,
+      val stateMode: String,
     @ColumnInfo(name ="app_block")
-     val appBlock: Map<String, String>?,
+     val appBlock: String,
     @ColumnInfo(name = "website_block")
-     val websiteBlock : Map<String, String>?,
+     val websiteBlock : String,
     @ColumnInfo(name = "config_system")
-     val configSystem: Map<String, Boolean>?
+     val configSystem:String
 
 )

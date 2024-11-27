@@ -2,22 +2,22 @@ package com.example.kidlock.data.local
 
 import androidx.room.Dao
 import androidx.room.Delete
+import androidx.room.Entity
 import androidx.room.Insert
+import androidx.room.OnConflictStrategy
 import androidx.room.Transaction
 import androidx.room.Update
+import javax.annotation.Nonnull
 
 @Dao
-interface DaoGeneric<T> {
+abstract class DaoGeneric<T> {
     @Transaction
-    @Insert
-    fun insert(instance:T)
-    @Transaction
-    @Insert
-    fun insertAll(instances: Array<T>)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    abstract suspend fun insert(vararg instance :T)
     @Transaction
     @Update
-    fun update(vararg instances: T)
+    abstract fun update(vararg instances: T)
     @Transaction
     @Delete
-    fun delete(vararg instances: T)
+    abstract fun delete(vararg instances: T)
 }

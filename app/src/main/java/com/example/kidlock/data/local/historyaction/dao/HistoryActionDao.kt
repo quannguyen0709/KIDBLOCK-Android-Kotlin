@@ -1,6 +1,9 @@
 package com.example.kidlock.data.local.historyaction.dao
 
+import androidx.room.Dao
 import com.example.kidlock.data.local.DaoGeneric
+import com.example.kidlock.data.local.historyaction.entity.HistoryActionOfKidEntity
 
-interface HistoryActionDao: DaoGeneric<HistoryActionDao> {
+@Dao
+abstract class HistoryActionDao: DaoGeneric<HistoryActionOfKidEntity>() {
 }

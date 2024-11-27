@@ -10,5 +10,5 @@ data class KidInforWithKidDevice(
         parentColumn = "kid_infor_id",
         entityColumn = "kid_device_id"
     )
-    val kidDeviceId: Array<KidInforEntity>?
+    val kidDeviceId: String
 )

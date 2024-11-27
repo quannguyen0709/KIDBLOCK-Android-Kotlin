@@ -14,5 +14,5 @@ data class HistoryActionOfKidEntity(
     @ColumnInfo(name = "time_human_readable")
     val timeFormatter: String,
     @ColumnInfo(name= "infor_block")
-    val blockInfor: Map<String, String>?,
+    val blockInfor: String,
 )

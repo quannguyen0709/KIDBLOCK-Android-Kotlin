@@ -65,6 +65,10 @@ import com.example.kidlock.theme.KidlockTheme
 import com.example.kidlock.theme.KidlockTheme.color
 import com.example.kidlock.uilayer.viewmodel.LoginAccount
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.async
+import kotlinx.coroutines.runBlocking
 
 @AndroidEntryPoint
 class LoginFragment() : Fragment() {
@@ -255,8 +259,8 @@ class LoginFragment() : Fragment() {
                 )
             }
             Button(
-                onClick = {
-
+                onClick =   {
+                    viewModel.createDB()
                 }, modifier = modifier
                     .fillMaxWidth()
                     .padding(10.dp),

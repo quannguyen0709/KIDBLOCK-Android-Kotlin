@@ -8,22 +8,24 @@ import javax.inject.Inject
 
 class ParentUserService (): RepositoryGeneric<ParentUser> {
 
-    override fun submit(instance: ParentUser) {
+    override suspend fun submit(instance: ParentUser) {
         TODO("Not yet implemented")
     }
 
-    override fun <ComponentOfObject> submit(
+    override fun <ComponentOfObject> accept(
         componentOfObject: ComponentOfObject,
         instanceObject: ParentUser
     ) {
         TODO("Not yet implemented")
     }
 
-    override fun <IdOfInstane> submit(instance: IdOfInstane) {
+    override fun <IdOfInstane> clear(instance: IdOfInstane) {
         TODO("Not yet implemented")
     }
 
     override fun <IdObject> getInfor(idObject: IdObject): ParentUser {
         TODO("Not yet implemented")
     }
+
+
 }
