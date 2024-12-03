@@ -4,16 +4,19 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.kidlock.data.repository.parent.ParentRepositoryData
 import com.example.kidlock.domain.kidlock.data.ParentUser
+import com.example.kidlock.utils.resource.Resource
+import com.example.kidlock.utils.resource.executeAsynchronous
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import java.util.UUID
 import javax.inject.Inject
 
 @HiltViewModel
 class LoginAccount @Inject constructor(val repositoryData: ParentRepositoryData) : ViewModel() {
-     fun  createDB()  {
+    var check : Resource<ParentUser> = Resource.Success<ParentUser>()
+    fun  createDB()  {
         val parentUser = ParentUser(
             idPaerntUser = UUID.randomUUID().toString(),
             name = "Quan",
@@ -23,8 +26,14 @@ class LoginAccount @Inject constructor(val repositoryData: ParentRepositoryData)
             passWord = "mithot123456",
             managerKidOfParentUser = arrayOf()
         )
-         viewModelScope.launch(Dispatchers.IO, ) {
-             repositoryData.submit(parentUser)
+
+         viewModelScope.launch  (Dispatchers.IO) {
+            check  = async {
+                executeAsynchronous<ParentUser>(message = "INSERT Parent User", data = null, callBack = suspend {
+                    repositoryData.submit(parentUser)
+                })
+            }.await()
+            println(check)
          }
     }
 

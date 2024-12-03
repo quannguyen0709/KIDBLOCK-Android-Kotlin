@@ -5,3 +5,4 @@ sealed class StateModeKidDevice {
     class Child: StateModeKidDevice()
     class Lock: StateModeKidDevice()
 }
+

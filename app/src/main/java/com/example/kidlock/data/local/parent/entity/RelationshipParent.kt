@@ -4,12 +4,13 @@ import androidx.room.Embedded
 import androidx.room.Relation
 import com.example.kidlock.data.local.kidinfor.entity.KidInforEntity
 
-data class ParentWithKidInfor(
+
+data class ParentWithKidsInfor (
     @Embedded
-    val parentId: String,
+    val parentUserEntity: ParentUserEntity,
     @Relation(
         parentColumn = "id_parent",
-        entityColumn = "kid_infor_id"
+        entityColumn = "parent_of_kid_id"
     )
-    val kidInfor: String
+    val listKidInforEntity: List<KidInforEntity>
 )

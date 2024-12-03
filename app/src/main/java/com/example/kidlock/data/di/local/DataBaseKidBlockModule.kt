@@ -25,7 +25,7 @@ object DataBaseKidBlockModule {
             /* context = */ applicationContext,
             /* klass = */ KidBlockDatabase::class.java,
             /* name = */ "kidbloc-database"
-        ).build()
+        ).fallbackToDestructiveMigration().build()
     }
 
 
