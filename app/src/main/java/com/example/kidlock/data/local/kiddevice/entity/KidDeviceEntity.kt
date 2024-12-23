@@ -8,34 +8,30 @@ import com.example.kidlock.data.local.generic.EntityAbstract
 @Entity(tableName = "kid_device")
 data class KidDeviceEntity(
     @PrimaryKey
-    @ColumnInfo(name = "kid_device_id")
-    val kidDeviceId: String = "",
+    @ColumnInfo(name = "id")
+    var kidDeviceId: String = "",
 
-    @ColumnInfo(name = "kid_infor_creator_id")
-    val kidInforId: String = "",
+    @ColumnInfo(name = "kid_infor_id")
+    var kidInforId: String = "",
 
     @ColumnInfo(name = "name_device")
-    val name: String = "",
+    var name: String = "",
 
     @ColumnInfo(name = "state_mode_kid_device")
-    val stateMode: String = "",
+    var stateMode: String = "",
 
-    @ColumnInfo(name = "app_block")
-    val appBlock: String = "",
-
-    @ColumnInfo(name = "website_block")
-    val websiteBlock: String = "",
+    @ColumnInfo(name = "block_id")
+    var blockId: String = "",
 
     @ColumnInfo(name = "config_system")
-    val configSystem: String = ""
+    var configSystem: String = ""
 ): EntityAbstract(){
     override fun getNameTable(): String = "kid_device"
-    override fun getNamePrimaryKey(): String = "kid_device_id"
-    fun getNameKidInforColum(): String = "kid_infor_creator_id"
+    override fun getNamePrimaryKey(): String = "id"
+    fun getNameKidInforColum(): String = "kid_infor_id"
     fun getNameKidDeviceColum(): String = "name_device"
     fun getNameStateModeColum(): String = "state_mode_kid_device"
-    fun getNameAppBlockColum(): String = "app_block"
-    fun getNameWebsiteBlockColum(): String = "website_block"
+    fun getNameBlockIdColum(): String = "block_id"
     fun getNameConfigSystem(): String = "config_system"
 
 }

@@ -8,39 +8,31 @@ import com.example.kidlock.data.local.generic.EntityAbstract
 @Entity(tableName = "kid_infor")
 data class KidInforEntity(
     @PrimaryKey
-    @ColumnInfo(name = "kid_infor_id")
-    val kidId: String = "",
+    @ColumnInfo(name = "id")
+    var kidId: String = "",
 
     @ColumnInfo(name = "parent_of_kid_id")
-    val parentOfKidId: String = "",
+    var parentOfKidId: String = "",
 
     @ColumnInfo(name = "name")
-    val name: String = "",
+    var name: String = "",
 
     @ColumnInfo(name = "age")
-    val age: Int = 0,
+    var age: Int = 0,
 
     @ColumnInfo(name = "avatar")
-    val avatar: String = "",
+    var avatar: String = "",
 
-    @ColumnInfo(name = "app_block")
-    val appBlock: String = "",
-
-    @ColumnInfo(name = "website_block")
-    val websiteBlock: String = "",
-
-    @ColumnInfo(name = "kid_devices")
-    val kidDevice: String = "",
+    @ColumnInfo(name = "block_id")
+    var blockId: String = "",
 
 ): EntityAbstract(){
     override fun getNameTable(): String = "kid_infor"
-    override fun getNamePrimaryKey(): String =  "kid_infor_id"
+    override fun getNamePrimaryKey(): String =  "id"
     fun getNameKidColum(): String = "name"
     fun getNameParentIdColum(): String = "parent_of_kid_id"
     fun getNameAgeColum(): String = "age"
     fun getAvatarColum(): String = "avatar"
-    fun getAppBlockColum(): String = "app_block"
-    fun getWebsiteBlockColum(): String = "website_block"
-    fun getKidDevicesColum(): String = "kid_devices"
+    fun getBlockIdColum(): String = "block_id"
 
 }

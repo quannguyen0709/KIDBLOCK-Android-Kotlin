@@ -9,6 +9,6 @@ import com.example.kidlock.data.local.parent.entity.ParentUserEntity
 public abstract class ParentDao: DaoGeneric<ParentUserEntity>() {
 
     //test query co the hoat dong bth
-    @Query("SELECT id_parent  FROM parent_user  WHERE id_parent =  :id")
+    @Query("SELECT id FROM parent_user  WHERE id =  :id")
     abstract suspend fun getIdParent(id: String): String
 }

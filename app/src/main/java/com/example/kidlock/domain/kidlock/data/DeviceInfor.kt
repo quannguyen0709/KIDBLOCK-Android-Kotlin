@@ -1,8 +1,8 @@
 package com.example.kidlock.domain.kidlock.data
 
 data class DeviceInfor(
-    val idDevices: String,
-    val appsBlock: Map<String, String>,
-    val websitesBlock: Map<String, String>,
-    val stateModeKidDevice: StateModeKidDevice
+    var idDevices: String,
+    var nameDevice: String,
+    var listBlok: Array<Block> = arrayOf(),
+    var stateModeKidDevice: StateModeKidDevice
 )

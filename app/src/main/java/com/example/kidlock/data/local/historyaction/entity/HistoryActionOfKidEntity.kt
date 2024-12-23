@@ -12,28 +12,28 @@ data class HistoryActionOfKidEntity(
 
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")
-    val id:Int = 0,
+    var id:Int = 0,
 
-    @ColumnInfo(name = "kid_infor_creator_id")
-    val kidInforId: String = "",
+    @ColumnInfo(name = "kid_infor_id")
+    var kidInforId: String = "",
 
-    @ColumnInfo(name = "kid_device_create_id")
-    val kidDeviceId: String = "",
+    @ColumnInfo(name = "kid_device_id")
+    var kidDeviceId: String = "",
 
     @ColumnInfo(name = "time_unix_epoch")
-    val timeUnix:String = "",
+    var timeUnix:String = "",
 
     @ColumnInfo(name = "time_human_readable")
-    val timeFormatter: Date = Date(2024, 10, 30),
+    var timeFormatter: Date = Date(2024, 10, 30),
 
-    @ColumnInfo(name= "infor_block")
+    @ColumnInfo(name= "block_id")
     val blockInfor: String = "",
 ): EntityAbstract(){
     override fun getNameTable() = "history_action_of_kid"
     override fun getNamePrimaryKey(): String = "id"
-    fun getNameKidInforColum(): String = "kid_infor_creator_id"
-    fun getNameKidDeviceColum(): String = "kid_device_create_id"
+    fun getNameKidInforColum(): String = "kid_infor_id"
+    fun getNameKidDeviceColum(): String = "kid_device_id"
     fun getNameTimeUnixColum(): String = "time_unix_epoch"
     fun getNameTimeFormatterColum(): String = "time_human_readable"
-    fun getNameBlockInfor(): String = "infor_block"
+    fun getNameBlockIdColum(): String = "block_id"
 }

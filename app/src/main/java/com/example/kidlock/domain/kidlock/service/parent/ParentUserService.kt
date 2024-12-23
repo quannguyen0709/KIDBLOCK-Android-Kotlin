@@ -12,20 +12,16 @@ class ParentUserService (): RepositoryGeneric<ParentUser> {
         TODO("Not yet implemented")
     }
 
-    override fun <ComponentOfObject> accept(
-        componentOfObject: ComponentOfObject,
-        instanceObject: ParentUser
-    ) {
+    override suspend fun accept(instanceObject: ParentUser) {
         TODO("Not yet implemented")
     }
 
-    override fun <IdOfInstane> clear(instance: IdOfInstane) {
+    override suspend fun clear(instance: ParentUser) {
         TODO("Not yet implemented")
     }
 
-    override fun <IdObject> getInfor(idObject: IdObject) {
+    override suspend fun getInfor(idObject: String): ParentUser {
         TODO("Not yet implemented")
     }
-
 
 }

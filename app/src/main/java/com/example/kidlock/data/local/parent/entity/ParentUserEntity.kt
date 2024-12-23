@@ -9,27 +9,27 @@ import com.example.kidlock.data.local.generic.EntityAbstract
 @Entity(tableName = "parent_user")
 data class ParentUserEntity (
     @PrimaryKey
-    @ColumnInfo(name = "id_parent")
-     val idParent: String = "",
+    @ColumnInfo(name = "id")
+     var idParent: String = "",
 
     @ColumnInfo(name = "name" )
-     val name: String = "",
+     var name: String = "",
 
     @ColumnInfo(name = "email")
-     val email: String = "",
+     var email: String = "",
 
     @ColumnInfo(name = "password")
-     val passWord: String = "",
+     var passWord: String = "",
 
     @ColumnInfo(name = "pin")
-    val pin: Int = 0,
+    var pin: Int = 0,
 
     @ColumnInfo(name = "phone")
-    val phone:String = ""
+    var phone:String = ""
 
 ): EntityAbstract(){
     override fun getNameTable(): String = "parent_user"
-    override fun getNamePrimaryKey(): String = "id_parent"
+    override fun getNamePrimaryKey(): String = "id"
     fun getNameParentColum(): String = "name"
     fun getNameEmailColum(): String = "email"
     fun getNamePasswordColum(): String = "password"

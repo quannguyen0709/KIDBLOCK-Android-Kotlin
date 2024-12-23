@@ -83,7 +83,7 @@ dependencies {
 
 
     //Reflect
-    //implementation "org.jetbrains.kotlin:kotlin-reflect:2.1.0"
+    implementation "org.jetbrains.kotlin:kotlin-reflect:"
 
     //Hilt
     implementation "com.google.dagger:hilt-android:2.44"

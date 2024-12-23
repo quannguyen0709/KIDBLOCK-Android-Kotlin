@@ -11,6 +11,8 @@ import com.example.kidlock.data.local.generic.QueryGeneric
 import com.example.kidlock.data.local.generic.toRawQuery
 import com.example.kidlock.data.local.parent.dao.ParentDao
 import com.example.kidlock.data.local.parent.dao.QueryParent
+import com.example.kidlock.data.local.parent.entity.ParentUserEntity
+import com.example.kidlock.data.local.parent.mapper.toDomain
 import com.example.kidlock.data.local.parent.mapper.toEnitity
 import com.example.kidlock.domain.kidlock.data.ParentUser
 import com.example.kidlock.utils.resource.Resource
@@ -35,41 +37,23 @@ class ParentRepositoryImpl @Inject constructor (
     override suspend fun submit(instance: ParentUser) {
         val parentUserEntity = instance.toEnitity()
         if (parentDao.insert(parentUserEntity).any().equals(-1) ) throw RuntimeException("Khong insert duoc parent")
-        val command = queryParent.queryGetEntity(instance.idPaerntUser )
-        val id = GlobalScope.async(Dispatchers.IO) {
-            try{
-                parentDao.getEntity(command.toRawQuery())
-            }catch (ex: Exception){
-                println(ex.message)
-            }
-        }.await()
-        println("  DAY LA TEST GETID CUA PARRENT  " + id)
-
-        val a= GlobalScope.async (Dispatchers.IO){
-            try {
-                parentDao.getId(queryParent.queyGetIdEntity(instance.idPaerntUser).toRawQuery())
-            }catch (ex: Exception){
-                println("Exception GETIDPARENT" + ex)
-            }
-
-        }.await()
-        println(a)
     }
 
-    override fun <ComponentOfObject> accept(
-        componentOfObject: ComponentOfObject,
+    override suspend fun accept(
         instanceObject: ParentUser
     ) {
-        TODO("Not yet implemented")
+        if (parentDao.update(instanceObject.toEnitity()) == -1) throw RuntimeException("Update khong thanh cong parent")
     }
 
-    override fun <String> clear(instance: String) {
-
-        //databaseKidBlock.parentDao().delete()
+    override suspend fun clear(instance: ParentUser) {
+        if (parentDao.delete(instance.toEnitity()) == -1 )  throw RuntimeException("Khong co parent de delete ")
     }
 
-    override fun <String> getInfor(idObject: String) {
-        TODO("Not yet implemented")
+    override suspend fun getInfor(idObject: String): ParentUser {
+        val command = queryParent.queryGetEntity(idObject)
+        val result : ParentUserEntity = GlobalScope.async(Dispatchers.IO) { parentDao.getEntity(command.toRawQuery()) }.await()
+        if (result != null) return  return result.toDomain()
+        throw RuntimeException("Khong tim thay parent user in db")
     }
 
 
