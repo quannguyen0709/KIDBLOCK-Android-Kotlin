@@ -56,6 +56,7 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.navigation.Navigation.findNavController
 import com.example.kidlock.R
+import com.example.kidlock.persentation.utils.SizeScreen.wp
 import com.example.kidlock.theme.KidlockTheme.color
 
 @Composable
@@ -65,11 +66,8 @@ fun KidLockTitle(
     color: Color
 ) {
     Row(
-        modifier = modifier
-            .wrapContentHeight()
-            .wrapContentWidth()
-            .padding(start = 69.dp, end = 69.dp),
-        horizontalArrangement = Arrangement.SpaceAround,
+        modifier = modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Image(
@@ -77,7 +75,7 @@ fun KidLockTitle(
             contentDescription = "image description",
             contentScale = ContentScale.None
         )
-        Spacer(modifier = modifier.padding(8.dp))
+        Spacer(modifier = modifier.padding(1.0.wp()))
         Text(
             text = "Kid",
             style = MaterialTheme.typography.titleLarge,
@@ -97,12 +95,10 @@ fun CardButtonPrimary(
     title: String,
     subTitle: String,
     colorBackGround: Color,
-    idDestination: Int,
-    view: View? = null
+    callBack:()-> Unit
 ) {
     Row(
         modifier = modifier
-            .padding(start = 24.dp, end = 24.dp)
             .shadow(
                 elevation = 4.dp,
                 spotColor = MaterialTheme.color.SealBrown,
@@ -111,23 +107,21 @@ fun CardButtonPrimary(
             .fillMaxWidth()
             .background(color = colorBackGround, shape = MaterialTheme.shapes.medium)
             .clickable {
-                if (view != null) {
-                    findNavController(view = view).navigate(idDestination)
-                }
-            },
-        horizontalArrangement = Arrangement.spacedBy(24.dp, Alignment.Start),
+                callBack()
+            }
+            .padding(6.0.wp()),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Image(
-            modifier = modifier.padding(start = 20.dp, end = 24.dp),
+            modifier = modifier,
             painter = painterResource(id = icon),
             contentDescription = "image description",
             contentScale = ContentScale.FillBounds
         )
-
+        Spacer(modifier = modifier.padding(3.0.wp()))
         Column(
-            modifier = modifier.padding(top = 20.dp, bottom = 20.dp, end = 20.dp),
-            verticalArrangement = Arrangement.spacedBy(10.dp, Alignment.Top),
+            modifier = modifier,
+            verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.Start,
         ) {
             Text(
@@ -150,7 +144,7 @@ fun CardLoginParent(
     colorBackGround: Color,
     title: String,
     icon: Int,
-    view: View? = null
+    callBack: () -> Unit
 ) {
     val focusRequester = remember { FocusRequester() }
     var textEmail by remember { mutableStateOf(TextFieldValue("")) }
@@ -260,9 +254,7 @@ fun CardLoginParent(
                 modifier = modifier
                     .fillMaxWidth()
                     .clickable {
-                        if (view != null) {
-                            findNavController(view = view).navigate(R.id.action_loginFragment_to_forgotPassFragment)
-                        }
+                        callBack
                     },
                 textAlign = TextAlign.End,
                 text = "Forgot password?",
@@ -285,9 +277,7 @@ fun CardLoginParent(
             modifier = modifier
                 .padding(10.dp)
                 .clickable {
-                    if (view != null) {
-                        findNavController(view = view).navigate(R.id.action_loginFragment_to_createNewAccountFragment)
-                    }
+                    callBack
                 },
             text = "Create new account",
             style = MaterialTheme.typography.labelMedium.copy(color = MaterialTheme.color.LightningYellow),
@@ -301,9 +291,7 @@ fun CardLoginParent(
             .padding(10.dp)
             .fillMaxWidth()
             .clickable {
-                if (view != null) {
-                    findNavController(view = view).navigate(R.id.action_loginFragment_to_homeFragment)
-                }
+                callBack
             },
         text = "Cancel",
         style = MaterialTheme.typography.labelMedium.copy(color = Color.White),

@@ -43,13 +43,13 @@ import androidx.navigation.Navigation
 import com.example.kidlock.R
 import com.example.kidlock.theme.KidlockTheme
 import com.example.kidlock.theme.KidlockTheme.color
-import com.example.kidlock.uilayer.viewmodel.LoginAccount
+import com.example.kidlock.persentation.views.loginfragment.LoginViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class SettingsFragment : Fragment() {
     private lateinit var view: View
-    private val viewModel by activityViewModels<LoginAccount>()
+    private val viewModel by activityViewModels<LoginViewModel>()
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,

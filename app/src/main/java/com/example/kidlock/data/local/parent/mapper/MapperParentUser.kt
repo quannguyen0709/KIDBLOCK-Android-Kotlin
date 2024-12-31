@@ -20,13 +20,14 @@ fun ParentUser.toEnitity():ParentUserEntity{
     return parentUserEntity
 }
 fun ParentUserEntity.toDomain(): ParentUser{
-    return ParentUser(
-        id = this.idParent,
-        name = this.name,
-        passWord = this.passWord,
-        PIN = this.pin,
-        gmail = this.email,
-        phone = this.phone,
-        managerKidOfParentUser =  arrayOf()
+    val mapping: Map<String, String> = mapOf(
+         "idParent" to "id" ,
+        "name" to "name",
+         "email" to "gmail" ,
+        "phone" to "phone",
+        "passWord" to "passWord",
+        "pin" to "PIN"
     )
+    val parentUser: ParentUser = mapping(source = this, mapping = mapping, objectTarget = ParentUser()) as ParentUser
+    return parentUser
 }

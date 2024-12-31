@@ -1,13 +1,6 @@
 package com.example.kidlock.data.repository.parent
 
-import android.provider.Settings.Global
-import androidx.room.Insert
-import androidx.room.RoomRawQuery
-import androidx.sqlite.db.SimpleSQLiteQuery
-import androidx.sqlite.db.SupportSQLiteQuery
-import com.example.kidlock.data.di.LocalDataKidBlock
-import com.example.kidlock.data.infrastructure.database.KidBlockDatabase
-import com.example.kidlock.data.local.generic.QueryGeneric
+
 import com.example.kidlock.data.local.generic.toRawQuery
 import com.example.kidlock.data.local.parent.dao.ParentDao
 import com.example.kidlock.data.local.parent.dao.QueryParent
@@ -15,17 +8,10 @@ import com.example.kidlock.data.local.parent.entity.ParentUserEntity
 import com.example.kidlock.data.local.parent.mapper.toDomain
 import com.example.kidlock.data.local.parent.mapper.toEnitity
 import com.example.kidlock.domain.kidlock.data.ParentUser
-import com.example.kidlock.utils.resource.Resource
-import com.example.kidlock.utils.resource.executeAsynchronous
-import dagger.hilt.EntryPoint
-import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
-import kotlinx.coroutines.launch
 import javax.inject.Inject
-import kotlin.coroutines.suspendCoroutine
-import kotlin.jvm.Throws
 
 
 class ParentRepositoryImpl @Inject constructor (

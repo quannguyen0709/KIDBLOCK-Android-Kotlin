@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <application
+        android:windowSoftInputMode="adjustResize"
         android:name=".KidLockApp"
         android:allowBackup="false"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -14,7 +15,7 @@
         android:theme="@style/Theme.KidLock"
         tools:targetApi="31">
         <activity
-            android:name=".uilayer.MainScreen"
+            android:name=".persentation.views.mainscreen.MainScreen"
             android:exported="true"
             android:label="@string/app_name"
             android:windowSoftInputMode="adjustResize">
