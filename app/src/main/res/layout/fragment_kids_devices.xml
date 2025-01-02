@@ -13,6 +13,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/composeview_kids_devices"
-        tools:composableName="com.example.kidlock.uilayer.fragment.KidsDevicesFragment.KidsDevicesPreview"/>
+        tools:composableName="com.example.kidlock.persentation.views.dashboard.DashboardFragment.KidsDevicesPreview"/>
 
 </FrameLayout>

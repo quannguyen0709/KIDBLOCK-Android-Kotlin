@@ -61,9 +61,12 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.setFragmentResult
 import com.example.kidlock.R
+import com.example.kidlock.persentation.navigation.ApplicationPages
 import com.example.kidlock.persentation.utils.SizeScreen.hp
 import com.example.kidlock.persentation.utils.SizeScreen.wp
 import com.example.kidlock.persentation.views.mainscreen.MainScreenViewModel
@@ -71,6 +74,8 @@ import com.example.kidlock.persentation.views.statekeyboard.Keyboard
 import com.example.kidlock.persentation.views.statekeyboard.keyboardAsStateWithApi
 import com.example.kidlock.theme.KidlockTheme
 import com.example.kidlock.theme.KidlockTheme.color
+import com.example.kidlock.utils.gson.toJsonFromObject
+import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
@@ -409,6 +414,11 @@ class LoginFragment() : Fragment() {
                             viewModelLogin.loginAccoutn()
                             loadingLogin = false
                         }
+                        val bundle: Bundle = Bundle().apply {
+                            this.putSerializable("bundleKey", toJsonFromObject(viewModelLogin.parentUser))
+                        }
+                        this@LoginFragment.setFragmentResult("requestKey", bundle)
+                        viewModelMain.navControllerApplication.navigate(ApplicationPages.DASHBOARD)
                         //viewModelLogin.createDB()
                     }, modifier = modifier
                         .fillMaxWidth()
@@ -428,6 +438,7 @@ class LoginFragment() : Fragment() {
                     modifier = modifier
                         .padding(3.0.wp())
                         .clickable {
+                          viewModelMain.navControllerApplication.navigate(ApplicationPages.SIGNUP)
 //                        Navigation
 //                            .findNavController(view = view)
 //                            .navigate(R.id.action_loginFragment_to_createNewAccountFragment)

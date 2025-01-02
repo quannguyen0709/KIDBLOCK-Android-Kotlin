@@ -79,7 +79,7 @@
     </fragment>
     <fragment
         android:id="@+id/kidsDevicesFragment"
-        android:name="com.example.kidlock.uilayer.fragment.KidsDevicesFragment"
+        android:name="com.example.kidlock.persentation.views.dashboard.DashboardFragment"
         android:label="KidsDevicesFragment"
         tools:layout="@layout/fragment_kids_devices">
         <action

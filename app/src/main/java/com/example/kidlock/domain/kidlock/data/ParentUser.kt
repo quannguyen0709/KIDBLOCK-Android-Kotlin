@@ -1,6 +1,5 @@
 package com.example.kidlock.domain.kidlock.data
 
-import dagger.hilt.android.AndroidEntryPoint
 
 data class ParentUser(
     var id: String = "",

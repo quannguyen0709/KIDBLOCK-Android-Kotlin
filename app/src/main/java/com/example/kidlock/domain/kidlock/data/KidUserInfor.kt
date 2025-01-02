@@ -1,5 +1,6 @@
 package com.example.kidlock.domain.kidlock.data
 
+
 data class KidUserInfor(
     var id: String ,
     var name: String,

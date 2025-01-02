@@ -35,7 +35,15 @@ class LoginViewModel @Inject constructor(val repositoryParentUserService: Parent
      val parentAcountLogin : MutableLiveData<ParentUser> = MutableLiveData<ParentUser>(ParentUser())
     var check : Resource<ParentUser> = Resource.Success<ParentUser>()
 
-
+    val parentUser = ParentUser(
+        id = UUID.randomUUID().toString(),
+        name = "Quan",
+        phone = "0906192477",
+        gmail = "quangquan21102002@gmail.com",
+        PIN = 123456,
+        passWord = "mithot123456",
+        managerKidOfParentUser = arrayOf()
+    )
 
     fun valueEmailChange(value: String){
         parentAcountLogin.value!!.gmail = value
@@ -64,15 +72,7 @@ class LoginViewModel @Inject constructor(val repositoryParentUserService: Parent
         val test = mapping(source, mapOf("name" to "like", "test" to "test"), taerget )
         println("TEST MAPPPINGNGGGGG " +test)
 
-        val parentUser = ParentUser(
-            id = UUID.randomUUID().toString(),
-            name = "Quan",
-            phone = "0906192477",
-            gmail = "quangquan21102002@gmail.com",
-            PIN = 123456,
-            passWord = "mithot123456",
-            managerKidOfParentUser = arrayOf()
-        )
+
         val testParent = parentUser.toEnitity()
         println(testParent)
 
