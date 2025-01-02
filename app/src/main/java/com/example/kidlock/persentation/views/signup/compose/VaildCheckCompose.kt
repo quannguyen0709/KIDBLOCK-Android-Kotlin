@@ -66,6 +66,12 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
+enum class TypeInput{
+    NAME_USE,
+    EMAIL_USER,
+    PASSWORD_USER,
+    REPEAT_PASSWORD_USER,
+}
 
 abstract class TypeTextInputVaild {
     abstract val nameInput: String
@@ -73,9 +79,8 @@ abstract class TypeTextInputVaild {
     abstract val errorDescription: String
     abstract val vaildCheck: MutableLiveData<Boolean>
     val input: MutableLiveData<String> = MutableLiveData<String>("")
-    abstract val keyboardOptions: KeyboardOptions
-    abstract val keyboardActions: KeyboardActions
-    abstract val focusManager: FocusManager
+    val keyboardOptions: KeyboardOptions = KeyboardOptions()
+    var keyboardActions: KeyboardActions = KeyboardActions()
     private var visible: Boolean = true
     abstract val icon: Int
     val visiblePassword: MutableLiveData<VisualTransformation> = MutableLiveData(
@@ -101,16 +106,20 @@ abstract class TypeTextInputVaild {
 class NameUser(
     override val nameInput: String = "Name",
     override val description: String = "John Doe",
-    override val focusManager: FocusManager,
-    override val keyboardOptions: KeyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
-    override val keyboardActions: KeyboardActions = KeyboardActions(
-        onGo = {
-            focusManager.moveFocus(FocusDirection.Down)
-        }
-    ),
     override val icon: Int = 0,
     override val errorDescription: String = "Name user is empty"
 ) : TypeTextInputVaild() {
+    companion object {
+        var counter: Int = 0
+
+        fun counter(): Int {
+            return counter
+        }
+    }
+
+    init {
+        counter++
+    }
     override val vaildCheck: MutableLiveData<Boolean> = MutableLiveData(true)
     override fun checkVaild() {
         vaildCheck.value = super.input.value!!.isNotEmpty()
@@ -120,15 +129,6 @@ class NameUser(
 data class EmailUser(
     override val nameInput: String = "Email",
     override val description: String = "johndoe@example.com",
-    override val keyboardOptions: KeyboardOptions = KeyboardOptions(
-        imeAction = ImeAction.Next
-    ),
-    override val focusManager: FocusManager,
-    override val keyboardActions: KeyboardActions = KeyboardActions(
-        onGo = {
-            focusManager.moveFocus(FocusDirection.Down)
-        }
-    ),
     override val icon: Int = 0,
     override val errorDescription: String = "Email address is not correct"
 
@@ -143,13 +143,6 @@ data class PasswordUser(
     override val nameInput: String = "Password",
     override val description: String = "******",
     override val icon: Int = R.drawable.eye_off_1,
-    override val focusManager: FocusManager,
-    override val keyboardOptions: KeyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
-    override val keyboardActions: KeyboardActions = KeyboardActions(
-        onGo = {
-            focusManager.moveFocus(FocusDirection.Down)
-        }
-    ),
     override val errorDescription: String = "",
 ) : TypeTextInputVaild() {
     init {
@@ -167,13 +160,6 @@ data class RepeatPasswordUser(
     override val description: String = "******",
     var passwordUser: String = "",
     override val icon: Int = R.drawable.eye_off_1,
-    override val focusManager: FocusManager,
-    override val keyboardOptions: KeyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
-    override val keyboardActions: KeyboardActions = KeyboardActions(
-        onDone = {
-            focusManager.clearFocus()
-        }
-    ),
     override val errorDescription: String = "Repeat password is not correct"
 ) : TypeTextInputVaild() {
     init {
@@ -186,15 +172,26 @@ data class RepeatPasswordUser(
     }
 }
 
+fun generateTypeInputText(focusManager: FocusManager, typeInput:TypeInput):TypeTextInputVaild{
+    return when(typeInput){
+        TypeInput.NAME_USE -> NameUser()
+        TypeInput.EMAIL_USER -> PasswordUser()
+        TypeInput.PASSWORD_USER -> TODO()
+        TypeInput.REPEAT_PASSWORD_USER -> TODO()
+    }
+}
+
 
 @Composable
-fun shapeInputCompose(typeInput: TypeTextInputVaild) {
+fun shapeInputCompose(typeInput: TypeTextInputVaild, textValue: String) {
     Row(
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(3.0.wp()),
         horizontalArrangement = Arrangement.End,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        if (typeInput.input.value!!.isEmpty()) {
+        if (typeInput.input.value == "") {
             Text(
                 modifier = Modifier.fillMaxWidth(),
                 text = typeInput.description,
@@ -229,20 +226,20 @@ fun textInput(typeInput: TypeTextInputVaild) {
     var textValue by rememberSaveable {
         mutableStateOf("")
     }
-    var checkFocus = false
     val stateVisible = typeInput.visiblePassword.observeAsState()
     val checkVaildObserver = typeInput.vaildCheck.observeAsState()
     return Column(
         modifier = Modifier
             .fillMaxWidth()
             .height(Dp.Unspecified),
-        verticalArrangement = Arrangement.SpaceBetween,
+        verticalArrangement = Arrangement.SpaceAround,
         horizontalAlignment = Alignment.Start,
     ) {
         Text(
             text = typeInput.nameInput,
-            style = MaterialTheme.typography.labelMedium,
+            style = MaterialTheme.typography.titleMedium,
         )
+        Spacer(modifier = Modifier.padding(1.0.wp()))
         Row(
             modifier = Modifier
                 .height(12.0.wp())
@@ -255,11 +252,7 @@ fun textInput(typeInput: TypeTextInputVaild) {
             BasicTextField(
                 textStyle = MaterialTheme.typography.labelSmall,
                 modifier = Modifier
-                    .onFocusChanged { focusState ->
-                        if (!focusState.isFocused) {
-                            typeInput.checkVaild()
-                        }
-                    },
+                    .fillMaxWidth(),
                 value = textValue,
                 keyboardActions = typeInput.keyboardActions,
                 keyboardOptions = typeInput.keyboardOptions,
@@ -267,14 +260,20 @@ fun textInput(typeInput: TypeTextInputVaild) {
                 onValueChange = {
                     textValue = it
                     typeInput.input.value = it
+                    typeInput.checkVaild()
                 },
                 visualTransformation = stateVisible.value!!,
                 decorationBox = { innerTextField ->
-                    shapeInputCompose(typeInput = typeInput)
-                    innerTextField()
+                    shapeInputCompose(typeInput = typeInput, textValue)
+                    Row(modifier = Modifier
+                        .fillMaxSize()
+                        .padding(3.0.wp()), verticalAlignment = Alignment.CenterVertically){
+                        innerTextField()
+                    }
                 }
             )
         }
+        Spacer(modifier = Modifier.padding(1.0.wp()))
         if (!checkVaildObserver.value!!) {
             Text(
                 text = typeInput.errorDescription,
@@ -288,6 +287,6 @@ fun textInput(typeInput: TypeTextInputVaild) {
 @Preview(showSystemUi = true, device = "spec:width=1079.9px,height=2340px,dpi=440")
 fun Test(){
     KidlockTheme {
-        textInput(typeInput = NameUser(focusManager = LocalFocusManager.current))
+        textInput(typeInput = NameUser())
     }
 }

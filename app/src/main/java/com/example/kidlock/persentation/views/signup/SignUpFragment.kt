@@ -1,6 +1,7 @@
 package com.example.kidlock.persentation.views.signup
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -55,6 +56,7 @@ import androidx.navigation.findNavController
 import com.example.kidlock.R
 import com.example.kidlock.persentation.utils.SizeScreen.wp
 import com.example.kidlock.persentation.views.signup.compose.NameUser
+import com.example.kidlock.persentation.views.signup.compose.TypeInput
 import com.example.kidlock.persentation.views.signup.compose.TypeTextInputVaild
 import com.example.kidlock.persentation.views.signup.compose.textInput
 import com.example.kidlock.persentation.views.statekeyboard.Keyboard
@@ -80,13 +82,16 @@ class SignUpFragment: Fragment() {
         return  view
     }
 
+    override fun onStart() {
+        super.onStart()
+        Log.e("Number instance of object ", "So instnace cuar nameuser"
+            + NameUser.counter.toString())
+    }
     @Composable
     fun viewOfSignUp(){
-        val listLocalFocus = List(4, { LocalFocusManager.current})
         val localFocusColum = LocalFocusManager.current
         val rememberKeyState = keyboardAsStateWithoutApi()
         val paddingHeight = if(rememberKeyState.value == Keyboard.Opened){0.5.wp()}else{3.0.wp()}
-        signUpViewModel.setValueOfListInforSignUp(listLocalFocus.get(0), listLocalFocus.get(1), listLocalFocus.get(2), listLocalFocus.get(3))
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -104,9 +109,27 @@ class SignUpFragment: Fragment() {
                 text = "Create new account " ,
                 style = MaterialTheme.typography.displaySmall
             )
+
             for(element in signUpViewModel.listInforSignUp ){
-                textInput(typeInput = element.value)
-                Spacer(modifier = Modifier.padding(paddingHeight))
+                if (element.key != TypeInput.REPEAT_PASSWORD_USER){
+                    textInput(typeInput = element.value.apply {
+                        this.keyboardOptions.copy(imeAction = ImeAction.Next)
+                        this.keyboardActions = KeyboardActions(onNext = {
+                            localFocusColum.moveFocus(
+                                FocusDirection.Down
+                            )
+                        })
+                    })
+                    Spacer(modifier = Modifier.padding(paddingHeight))
+                }else{
+                    textInput(typeInput = element.value.apply {
+                        this.keyboardOptions.copy(imeAction = ImeAction.Done)
+                        this.keyboardActions = KeyboardActions(onNext = {
+                            localFocusColum.clearFocus()
+                        })
+                    })
+                    Spacer(modifier = Modifier.padding(paddingHeight))
+                }
             }
             Button(
                 onClick = {
@@ -137,13 +160,6 @@ class SignUpFragment: Fragment() {
                 textDecoration = TextDecoration.Underline,
                 textAlign = TextAlign.Center
             )
-        }
-    }
-    @Composable
-    @Preview(showSystemUi = true, device = "spec:width=1079.9px,height=2340px,dpi=440")
-    fun Test(){
-        KidlockTheme {
-            textInput(typeInput = NameUser(focusManager = LocalFocusManager.current))
         }
     }
 }

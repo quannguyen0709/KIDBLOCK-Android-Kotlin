@@ -11,35 +11,33 @@ import com.example.kidlock.persentation.views.signup.compose.EmailUser
 import com.example.kidlock.persentation.views.signup.compose.NameUser
 import com.example.kidlock.persentation.views.signup.compose.PasswordUser
 import com.example.kidlock.persentation.views.signup.compose.RepeatPasswordUser
+import com.example.kidlock.persentation.views.signup.compose.TypeInput
 import com.example.kidlock.persentation.views.signup.compose.TypeTextInputVaild
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
 class SignUpViewModel @Inject constructor(): ViewModel(){
-    lateinit var listInforSignUp : Map<String, TypeTextInputVaild>
+    lateinit var listInforSignUp : Map<TypeInput, TypeTextInputVaild>
 
-    fun setValueOfListInforSignUp(
-        focusManagerName: FocusManager,
-        focusManagerEmail: FocusManager,
-        focusManagerPassword: FocusManager,
-        focusManagerRepeat: FocusManager
-    ) {
+    init {
+        setValueOfListInforSignUp()
+    }
 
+    fun setValueOfListInforSignUp() {
         listInforSignUp = mapOf(
-            "nameUser" to NameUser(focusManager = focusManagerName),
-            "emailUser" to EmailUser(focusManager = focusManagerEmail),
-            "passwordUser" to PasswordUser(focusManager = focusManagerPassword,),
-            "repatePasswordUser" to RepeatPasswordUser(focusManager = focusManagerRepeat)
+            TypeInput.NAME_USE to NameUser(),
+            TypeInput.EMAIL_USER to EmailUser(),
+            TypeInput.PASSWORD_USER to PasswordUser(),
+            TypeInput.REPEAT_PASSWORD_USER to RepeatPasswordUser()
         )
         setCofig()
     }
 
     fun setCofig(){
-        listInforSignUp.get("passwordUser")!!.input.observeForever(Observer<String>{
+        listInforSignUp.get(TypeInput.PASSWORD_USER)!!.input.observeForever(Observer<String>{
                 it ->
-            (listInforSignUp.get("repatePasswordUser")!! as RepeatPasswordUser).passwordUser = it
-            (listInforSignUp.get("repatePasswordUser")!! as RepeatPasswordUser).checkVaild()
+            (listInforSignUp.get(TypeInput.REPEAT_PASSWORD_USER)!! as RepeatPasswordUser).passwordUser = it
         })
     }
 

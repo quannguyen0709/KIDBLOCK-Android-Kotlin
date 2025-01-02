@@ -89,7 +89,7 @@ class DashboardFragment : Fragment() {
                         .padding(16.dp),
                     verticalArrangement = Arrangement.spacedBy(2.dp),
                     horizontalAlignment = Alignment.CenterHorizontally,){
-                    textInput(typeInput = (PasswordUser(focusManager = LocalFocusManager.current)))
+                    textInput(typeInput = (PasswordUser()))
                     Text(text = dashboardViewModel.result.observeAsState().value.toString(), style = MaterialTheme.typography.titleLarge)
                 }
 //                    ) {
