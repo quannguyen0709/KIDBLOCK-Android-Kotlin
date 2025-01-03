@@ -85,7 +85,7 @@ class SignUpFragment: Fragment() {
     override fun onStart() {
         super.onStart()
         Log.e("Number instance of object ", "So instnace cuar nameuser"
-            + NameUser.counter.toString())
+            + TypeTextInputVaild.counter.toString())
     }
     @Composable
     fun viewOfSignUp(){

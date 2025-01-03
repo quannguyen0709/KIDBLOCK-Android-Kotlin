@@ -90,6 +90,17 @@ abstract class TypeTextInputVaild {
             PasswordVisualTransformation()
         }
     )
+    companion object {
+        var counter: Int = 0
+
+        fun counter(): Int {
+            return counter
+        }
+    }
+
+    init {
+        counter++
+    }
 
     fun updateVisible() {
         visible = !visible
