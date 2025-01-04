@@ -46,6 +46,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusProperties
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
@@ -63,6 +64,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.setFragmentResult
 import com.example.kidlock.R
@@ -70,6 +72,8 @@ import com.example.kidlock.persentation.navigation.ApplicationPages
 import com.example.kidlock.persentation.utils.SizeScreen.hp
 import com.example.kidlock.persentation.utils.SizeScreen.wp
 import com.example.kidlock.persentation.views.mainscreen.MainScreenViewModel
+import com.example.kidlock.persentation.views.signup.compose.TypeInput
+import com.example.kidlock.persentation.views.signup.compose.textInput
 import com.example.kidlock.persentation.views.statekeyboard.Keyboard
 import com.example.kidlock.persentation.views.statekeyboard.keyboardAsStateWithApi
 import com.example.kidlock.theme.KidlockTheme
@@ -78,6 +82,7 @@ import com.example.kidlock.utils.gson.toJsonFromObject
 import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.async
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
@@ -148,10 +153,6 @@ class LoginFragment() : Fragment() {
                             modifier = Modifier,
                             colorBackGround = Color.White,
                             title = "Login as parent",
-                            icon = R.drawable.eye_off_1,
-                            valueEmailChange = {viewModelLogin.valueEmailChange(it)},
-                            valuePassWordChange = { viewModelLogin.valuePasswordChange(it) },
-                            checkCorrectLogin =  viewModelLogin.checkLoginCorrect.observeAsState()
                         )
 
 
@@ -159,6 +160,7 @@ class LoginFragment() : Fragment() {
                             modifier = Modifier
                                 .padding(3.0.wp())
                                 .clickable {
+                                    viewModelMain.navControllerApplication.popBackStack()
 //                    if (view != null) {
 //                        Navigation
 //                            .findNavController(view = view)
@@ -208,12 +210,6 @@ class LoginFragment() : Fragment() {
                 modifier = Modifier,
                 colorBackGround = Color.White,
                 title = "Login as parent",
-                icon = R.drawable.eye_off_1,
-                checkCorrectLogin = remember {
-                    mutableStateOf(false)
-                },
-                valueEmailChange = {},
-                valuePassWordChange = {}
             )
         }
     }
@@ -223,30 +219,20 @@ class LoginFragment() : Fragment() {
         modifier: Modifier,
         colorBackGround: Color,
         title: String,
-        icon: Int,
-        valueEmailChange: (String)-> Unit,
-        valuePassWordChange: (String)-> Unit,
-        checkCorrectLogin: State<Boolean?>
     ) {
-        val valueEmail = remember {
-            mutableStateOf("")
-        }
-        val valuePassword = remember {
-            mutableStateOf("")
-        }
         var loadingLogin by rememberSaveable {
             mutableStateOf(false)
         }
         val rememberCoroutine = rememberCoroutineScope()
         val focusManager = LocalFocusManager.current
-        val focusRequester = remember { FocusRequester() }
-        var passwordVisible by rememberSaveable { mutableStateOf(false) }
 
-        Box(modifier = Modifier
-            .fillMaxWidth()
-            .size(60.0.hp())){
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .size(60.0.hp())
+        ) {
             Column(
-                modifier = modifier
+                modifier = modifier.clickable { focusManager.clearFocus() }
                     .height(60.0.hp())
                     .verticalScroll(rememberScrollState())
                     .padding(horizontal = 5.0.wp(), vertical = 5.0.wp())
@@ -269,133 +255,37 @@ class LoginFragment() : Fragment() {
                     verticalArrangement = Arrangement.Top,
                     horizontalAlignment = Alignment.Start,
                 ) {
-                    Text(
-                        text = "Email",
-                        style = MaterialTheme.typography.titleMedium,
-                    )
-                    TextField(
-                        modifier = modifier
-                            .fillMaxWidth()
-                            .focusRequester(focusRequester),
-                        value = valueEmail.value,
-                        keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
-                        keyboardActions = KeyboardActions(
-                            onNext = { focusManager.moveFocus(FocusDirection.Down) }
-                        ),
-                        onValueChange = {it ->
-                            valueEmailChange(it)
-                            valueEmail.value = it
-                        },
-                        placeholder = {
-                            Text(
-                                text = "Enter your e-mail",
-                                color = Color.Black.copy(alpha = 0.5f),
-                            )
-                        },
-                        shape = MaterialTheme.shapes.medium,
-                        colors = TextFieldDefaults.textFieldColors(
-                            backgroundColor = Color(0XFFA0A0A0).copy(0.1f),
-                            unfocusedIndicatorColor = Color.Transparent,
-                            focusedIndicatorColor = Color.Transparent,
-                            focusedLabelColor = Color(0XFFA0A0A0).copy(alpha = 0.5f),
-                            unfocusedLabelColor = Color(0XFFA0A0A0).copy(alpha = 0.5f),
-                        )
-                    )
-                    Text(
-                        modifier = modifier
-                            .height(
-                                if (checkCorrectLogin.value!!) {
-                                    0.0.hp()
-                                } else {
-                                    Dp.Unspecified
-                                }
-                            )
-                            .width(Dp.Unspecified)
-                            .align(Alignment.End)
-                            .padding(top = 1.0.wp())
-                            .clickable {
-//                            Navigation
-//                                .findNavController(view = view)
-//                                .navigate(R.id.action_loginFragment_to_forgotPassFragment)
-                            },
-                        text = "Email or password error",
-                        style = MaterialTheme.typography.labelSmall.copy(color = MaterialTheme.color.red),
-                        textDecoration = TextDecoration.Underline
-                    )
-                    Spacer(modifier = modifier.padding(3.0.wp()))
-                    Text(
-                        text = "Password",
-                        style = MaterialTheme.typography.titleMedium,
-                    )
-                    TextField(
-                        modifier = modifier
-                            .fillMaxWidth(),
-                        value = valuePassword.value, onValueChange = {
-                            valuePassWordChange(it)
-                            valuePassword.value = it
-                        },
-                        visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
-                        keyboardOptions = KeyboardOptions(
-                            imeAction = ImeAction.Go,
-                            keyboardType = KeyboardType.Password
-                        ),
-                        keyboardActions = KeyboardActions(
-                            onGo = {
+                    textInput(
+                        typeInput = viewModelLogin.typeTextInputVaild.getValue(TypeInput.EMAIL_USER)
+                            .apply {
+                                this.keyboardActions =
+                                    KeyboardActions(onNext = { focusManager.moveFocus(FocusDirection.Down) })
+                                this.keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next)
+                            })
+                    textInput(
+                        typeInput = viewModelLogin.typeTextInputVaild.getValue(TypeInput.PASSWORD_USER)
+                            .apply {
+                                this.keyboardActions =
+                                    KeyboardActions(onNext = { focusManager.clearFocus() })
+                                this.keyboardOptions.copy(imeAction = ImeAction.Done)
+                            })
 
-                            }
-                        ),
-                        trailingIcon = {
-                            IconButton(onClick = { passwordVisible = !passwordVisible }) {
-                                Icon(
-                                    painter = painterResource(id = icon),
-                                    contentDescription = ""
-                                )
-                            }
-                        },
-                        placeholder = {
-                            Text(
-                                text = "******",
-                                color = Color.Black.copy(alpha = 0.5f),
-                            )
-                        },
-                        shape = MaterialTheme.shapes.medium,
-                        colors = TextFieldDefaults.textFieldColors(
-                            backgroundColor = Color(0XFFA0A0A0).copy(0.1f),
-                            unfocusedIndicatorColor = Color.Transparent,
-                            focusedIndicatorColor = Color.Transparent,
-                            focusedLabelColor = Color(0XFFA0A0A0).copy(alpha = 0.2f),
-                            unfocusedLabelColor = Color(0XFFA0A0A0).copy(alpha = 0.2f),
-                            trailingIconColor = Color(0XFF00BD6E)
-                        )
-                    )
-                    Text(
-                        modifier = modifier
-                            .height(
-                                if (checkCorrectLogin.value!!) {
-                                    0.0.hp()
-                                } else {
-                                    Dp.Unspecified
-                                }
-                            )
-                            .width(Dp.Unspecified)
-                            .align(Alignment.End)
-                            .padding(top = 1.0.wp())
-                            .clickable {
-//                            Navigation
-//                                .findNavController(view = view)
-//                                .navigate(R.id.action_loginFragment_to_forgotPassFragment)
-                            },
-                        text = "Email or password error",
-                        style = MaterialTheme.typography.labelSmall.copy(color = MaterialTheme.color.red),
-                        textDecoration = TextDecoration.Underline
-                    )
                     Spacer(modifier = modifier.padding(3.5.wp()))
+
                     Text(
                         modifier = modifier
                             .height(Dp.Unspecified)
                             .width(Dp.Unspecified)
                             .align(Alignment.End)
                             .clickable {
+                                val bundle: Bundle = Bundle().apply {
+                                    this.putSerializable(
+                                        "bundleKey",
+                                        toJsonFromObject(viewModelLogin.parentUser)
+                                    )
+                                }
+                                setFragmentResult("requestKey", bundle)
+                                viewModelMain.navControllerApplication.navigate(ApplicationPages.FORGOT_PASSWORD)
 //                            Navigation
 //                                .findNavController(view = view)
 //                                .navigate(R.id.action_loginFragment_to_forgotPassFragment)
@@ -405,28 +295,42 @@ class LoginFragment() : Fragment() {
                         textDecoration = TextDecoration.Underline
                     )
                 }
+
                 Button(
-                    enabled =  !loadingLogin,
-                    onClick = {
-                        loadingLogin = true
-                        rememberCoroutine.launch {
-                            delay(500L)
-                            viewModelLogin.loginAccoutn()
-                            loadingLogin = false
-                        }
-                        val bundle: Bundle = Bundle().apply {
-                            this.putSerializable("bundleKey", toJsonFromObject(viewModelLogin.parentUser))
-                        }
-                        this@LoginFragment.setFragmentResult("requestKey", bundle)
-                        viewModelMain.navControllerApplication.navigate(ApplicationPages.DASHBOARD)
-                        //viewModelLogin.createDB()
-                    }, modifier = modifier
+                    modifier = modifier
                         .fillMaxWidth()
                         .padding(3.0.wp()),
                     colors = ButtonDefaults.buttonColors(
                         containerColor = MaterialTheme.color.LightningYellow,
                     ),
-                    shape = MaterialTheme.shapes.small
+                    shape = MaterialTheme.shapes.small,
+                    enabled = !loadingLogin,
+                    onClick = {
+                        loadingLogin = true
+                        rememberCoroutine.launch {
+                            delay(500L)
+                            val loginCorrect = async {
+                                viewModelLogin.loginAccoutn()
+                            }.await()
+                            if(loginCorrect){
+                                runBlocking {
+                                    val bundle: Bundle = Bundle().apply {
+                                        this.putSerializable(
+                                            "bundleKey",
+                                            toJsonFromObject(viewModelLogin.parentUser)
+                                        )
+                                    }
+                                    setFragmentResult("requestKey", bundle)
+
+                                }
+                                viewModelMain.navControllerApplication.navigate(ApplicationPages.DASHBOARD)
+                                loadingLogin = false
+                            }else{
+                                loadingLogin = false
+                            }
+                        }
+                        //viewModelMain.navControllerApplication.navigate(ApplicationPages.DASHBOARD)
+                    },
                 ) {
                     Text(
                         text = "Login",
@@ -438,7 +342,7 @@ class LoginFragment() : Fragment() {
                     modifier = modifier
                         .padding(3.0.wp())
                         .clickable {
-                          viewModelMain.navControllerApplication.navigate(ApplicationPages.SIGNUP)
+                            viewModelMain.navControllerApplication.navigate(ApplicationPages.SIGNUP)
 //                        Navigation
 //                            .findNavController(view = view)
 //                            .navigate(R.id.action_loginFragment_to_createNewAccountFragment)
@@ -452,7 +356,7 @@ class LoginFragment() : Fragment() {
 
 
             }
-            if (loadingLogin){
+            if (loadingLogin) {
                 CircularProgressIndicator(
                     modifier = Modifier
                         .size(20.0.wp())
@@ -461,10 +365,6 @@ class LoginFragment() : Fragment() {
                 )
             }
 
-        }
-
-        LaunchedEffect(Unit) {
-            focusRequester.requestFocus()
         }
     }
 

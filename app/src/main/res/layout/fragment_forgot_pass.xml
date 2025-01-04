@@ -8,5 +8,5 @@
         android:id="@+id/composeview_forgot_pass"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:composableName="com.example.kidlock.uilayer.fragment.ForgotPassFragment.ForgotPassPreview"/>
+        tools:composableName="com.example.kidlock.persentation.views.forgotpassword.ForgotPassFragment.ForgotPassPreview"/>
 </FrameLayout>

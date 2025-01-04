@@ -34,6 +34,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -46,6 +47,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -53,11 +55,14 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.navigation.Navigation.findNavController
 import com.example.kidlock.R
 import com.example.kidlock.persentation.utils.SizeScreen.wp
 import com.example.kidlock.theme.KidlockTheme.color
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 @Composable
 fun KidLockTitle(
@@ -434,9 +439,9 @@ fun PinDigit(modifier: Modifier = Modifier, colorBackGround: Color) {
         ) {
             for (i in 0 until lenghTextInput) {
                 if (i < textInputNum.text.length) {
-                    Dot(check = true, color = colorBackGround)
+                    //Dot(check = true, color = colorBackGround)
                 } else {
-                    Dot(check = false, color = Color(0XFFD9D9D9))
+                   // Dot(check = false, color = Color(0XFFD9D9D9))
                 }
             }
         }
@@ -448,23 +453,31 @@ fun PinDigit(modifier: Modifier = Modifier, colorBackGround: Color) {
 }
 
 @Composable
-fun Dot(check: Boolean, color: Color) {
+fun Dot(check: Boolean, color: Color, valuePin: String) {
+    val colorCheck = if(check){
+        Color(0XFF2092FA).copy(alpha = 0.3f)
+    }else{
+        Color(0XFFD9D9D9)
+    }
+    val rememberCoroutine = rememberCoroutineScope()
     Box(
         modifier = Modifier
             .size(42.dp)
-            .background(shape = MaterialTheme.shapes.medium, color = color),
+            .background(shape = MaterialTheme.shapes.medium, color = colorCheck),
         contentAlignment = Alignment.Center,
     ) {
-        if (check) {
-            Icon(
-                modifier = Modifier
-                    .size(32.dp)
-                    .padding(2.dp),
-                painter = painterResource(id = R.drawable.ellipse_16),
-                contentDescription = "",
-                tint =  Color(0XFF2092FA)
-
-            )
+        Text(text = valuePin, style = MaterialTheme.typography.displayLarge.copy())
+        LaunchedEffect(valuePin) {
+            delay(1000L)
         }
+        Icon(
+            modifier = Modifier
+                .size(32.dp)
+                .padding(2.dp),
+            painter = painterResource(id = R.drawable.ellipse_16),
+            contentDescription = "",
+            tint =  Color(0XFF2092FA)
+
+        )
     }
 }

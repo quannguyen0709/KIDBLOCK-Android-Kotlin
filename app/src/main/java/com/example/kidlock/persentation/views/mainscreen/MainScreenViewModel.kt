@@ -12,6 +12,5 @@ class MainScreenViewModel @Inject constructor(): ViewModel() {
 
     fun controllerNavApplication(controller: NavController){
         navControllerApplication = NavigationApplication(navController = controller).navigationApplication()
-
     }
 }

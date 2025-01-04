@@ -74,15 +74,15 @@ enum class TypeInput{
 }
 
 abstract class TypeTextInputVaild {
-    abstract val nameInput: String
-    abstract val description: String
-    abstract val errorDescription: String
-    abstract val vaildCheck: MutableLiveData<Boolean>
+    abstract var nameInput: String
+    abstract var description: String
+    abstract var errorDescription: String
+    abstract var vaildCheck: MutableLiveData<Boolean>
     val input: MutableLiveData<String> = MutableLiveData<String>("")
-    val keyboardOptions: KeyboardOptions = KeyboardOptions()
+    var keyboardOptions: KeyboardOptions = KeyboardOptions()
     var keyboardActions: KeyboardActions = KeyboardActions()
     private var visible: Boolean = true
-    abstract val icon: Int
+    abstract var icon: Int
     val visiblePassword: MutableLiveData<VisualTransformation> = MutableLiveData(
         if (visible) {
             VisualTransformation.None
@@ -115,10 +115,10 @@ abstract class TypeTextInputVaild {
 }
 
 class NameUser(
-    override val nameInput: String = "Name",
-    override val description: String = "John Doe",
-    override val icon: Int = 0,
-    override val errorDescription: String = "Name user is empty"
+    override var nameInput: String = "Name",
+    override var description: String = "John Doe",
+    override var icon: Int = 0,
+    override var errorDescription: String = "Name user is empty"
 ) : TypeTextInputVaild() {
     companion object {
         var counter: Int = 0
@@ -131,53 +131,52 @@ class NameUser(
     init {
         counter++
     }
-    override val vaildCheck: MutableLiveData<Boolean> = MutableLiveData(true)
+    override var vaildCheck: MutableLiveData<Boolean> = MutableLiveData(true)
     override fun checkVaild() {
         vaildCheck.value = super.input.value!!.isNotEmpty()
     }
 }
 
 data class EmailUser(
-    override val nameInput: String = "Email",
-    override val description: String = "johndoe@example.com",
-    override val icon: Int = 0,
-    override val errorDescription: String = "Email address is not correct"
+    override var nameInput: String = "Email",
+    override var description: String = "johndoe@example.com",
+    override var icon: Int = 0,
+    override var errorDescription: String = "Email address is not correct"
 
 ) : TypeTextInputVaild() {
-    override val vaildCheck: MutableLiveData<Boolean> = MutableLiveData(true)
+    override var vaildCheck: MutableLiveData<Boolean> = MutableLiveData(true)
     override fun checkVaild() {
         vaildCheck.value = Patterns.EMAIL_ADDRESS.matcher(super.input.value!!).matches()
     }
 }
 
 data class PasswordUser(
-    override val nameInput: String = "Password",
-    override val description: String = "******",
-    override val icon: Int = R.drawable.eye_off_1,
-    override val errorDescription: String = "",
+    override var nameInput: String = "Password",
+    override var description: String = "******",
+    override var icon: Int = R.drawable.eye_off_1,
+    override var errorDescription: String = "Password is empty",
 ) : TypeTextInputVaild() {
     init {
         super.updateVisible()
     }
 
-    override val vaildCheck: MutableLiveData<Boolean> = MutableLiveData(true)
+    override var vaildCheck: MutableLiveData<Boolean> = MutableLiveData(true)
     override fun checkVaild() {
         vaildCheck.value = true
     }
 }
 
 data class RepeatPasswordUser(
-    override val nameInput: String = "Repeat Password",
-    override val description: String = "******",
+    override var nameInput: String = "Repeat Password",
+    override var description: String = "******",
     var passwordUser: String = "",
-    override val icon: Int = R.drawable.eye_off_1,
-    override val errorDescription: String = "Repeat password is not correct"
+    override var icon: Int = R.drawable.eye_off_1,
+    override var errorDescription: String = "Repeat password is not correct"
 ) : TypeTextInputVaild() {
     init {
         super.updateVisible()
     }
-
-    override val vaildCheck: MutableLiveData<Boolean> = MutableLiveData(true)
+    override var vaildCheck: MutableLiveData<Boolean> = MutableLiveData(true)
     override fun checkVaild() {
         vaildCheck.value = passwordUser == super.input.value!!
     }
