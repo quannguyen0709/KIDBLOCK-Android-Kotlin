@@ -1,13 +1,11 @@
 package com.example.kidlock.persentation.views.dashboard
 
 import android.content.Context
-import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -22,56 +20,41 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Icon
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.ComposeView
-import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentResultListener
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.MutableLiveData
-import androidx.navigation.NavOptions
-import androidx.navigation.Navigation
 import com.example.kidlock.R
-import com.example.kidlock.domain.kidlock.data.ParentUser
+import com.example.kidlock.domain.model.ParentUser
 import com.example.kidlock.persentation.navigation.ApplicationPages
 import com.example.kidlock.persentation.utils.SizeScreen.hp
 import com.example.kidlock.persentation.utils.SizeScreen.wp
 import com.example.kidlock.persentation.views.mainscreen.MainScreenViewModel
-import com.example.kidlock.persentation.views.signup.compose.PasswordUser
-import com.example.kidlock.persentation.views.signup.compose.TypeTextInputVaild
-import com.example.kidlock.persentation.views.signup.compose.textInput
 import com.example.kidlock.theme.KidlockTheme
 import com.example.kidlock.theme.KidlockTheme.color
 import com.example.kidlock.utils.gson.fromJsonToObject
 import com.example.kidlock.utils.gson.toJsonFromObject
-import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.async
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 
 @AndroidEntryPoint
 class DashboardFragment : Fragment() {
@@ -90,6 +73,7 @@ class DashboardFragment : Fragment() {
                 fromJsonToObject<ParentUser>(bundle.getString("bundleKey").toString())
             // Do something with the result
            // bundle.clear()
+            val a = ""
         }
 
         super.onCreate(savedInstanceState)
@@ -111,6 +95,7 @@ class DashboardFragment : Fragment() {
                 Column(
                     modifier = Modifier
                         .fillMaxSize()
+                        .verticalScroll(rememberScrollState())
                         .padding(5.0.wp()),
                     verticalArrangement = Arrangement.spacedBy(1.5.wp()),
                     horizontalAlignment = Alignment.CenterHorizontally,
@@ -157,12 +142,25 @@ class DashboardFragment : Fragment() {
                         style = MaterialTheme.typography.headlineSmall
                     )
                     Spacer(modifier = Modifier.padding(3.0.wp()))
-                    ButtomDeviceChild(
-                        name = "Johny",
-                        subTitle = "Kid mode active",
-                        icon = R.drawable.ellipse_5,
-                        colorBackGround = MaterialTheme.color.Jade,
-                    )
+                    for( element in dashboardViewModel.listKidInfor){
+                        ButtomDeviceChild(
+                            name = element.name,
+                            subTitle = "Kid mode active",
+                            icon = element.avatar.toInt(),
+                            colorBackGround = MaterialTheme.color.Jade,
+                            navigation = {
+                                val bundle = Bundle().apply {
+                                    this.putSerializable(
+                                        "bundleKey",
+                                        toJsonFromObject(dashboardViewModel.testMockKidlist)
+                                    )
+                                }
+                                setFragmentResult("test", bundle)
+                                mainScreenViewModel.navControllerApplication.navigate(ApplicationPages.KID_DEVICE)
+
+                            }
+                        )
+                    }
 
                 }
                 Column (modifier = Modifier
@@ -215,72 +213,6 @@ class DashboardFragment : Fragment() {
     }
 
 
-    @Composable
-    @Preview(showSystemUi = true)
-    fun KidsDevicesPreview() {
-        KidlockTheme {
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(16.dp),
-                verticalArrangement = Arrangement.spacedBy(2.dp),
-                horizontalAlignment = Alignment.CenterHorizontally,
-            ) {
-                Spacer(modifier = Modifier.padding(4.dp))
-                Box(
-                    modifier = Modifier.fillMaxWidth(),
-                    contentAlignment = Alignment.CenterEnd
-                ) {
-
-                    Icon(
-                        modifier = Modifier
-                            .size(40.dp)
-                            .background(shape = CircleShape, color = MaterialTheme.color.Jade)
-                            .padding(8.dp),
-
-                        painter = painterResource(id = R.drawable.settings_1),
-                        contentDescription = "",
-                        tint = MaterialTheme.color.white
-                    )
-                }
-                Spacer(modifier = Modifier.padding(20.dp))
-                Text(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(start = 10.dp),
-                    text = "Kids devices",
-                    textAlign = TextAlign.Left,
-                    fontWeight = FontWeight.Bold,
-                    style = MaterialTheme.typography.headlineSmall
-                )
-                Spacer(modifier = Modifier.padding(8.dp))
-                ButtomDeviceChild(
-                    name = "Johny",
-                    subTitle = "Kid mode active",
-                    icon = R.drawable.ellipse_5,
-                    colorBackGround = MaterialTheme.color.Jade,
-
-                    )
-                Spacer(modifier = Modifier.padding(10.dp))
-                Button(
-                    onClick = {},
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(5.dp),
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = MaterialTheme.color.LightningYellow,
-                    ),
-                    shape = MaterialTheme.shapes.small
-                ) {
-                    Text(
-                        text = "Enter Kid mode",
-                        style = MaterialTheme.typography.titleMedium,
-                        color = Color.White
-                    )
-                }
-            }
-        }
-    }
 
     @Composable
     fun ButtomDeviceChild(
@@ -288,7 +220,8 @@ class DashboardFragment : Fragment() {
         subTitle: String,
         modifier: Modifier = Modifier,
         icon: Int,
-        colorBackGround: Color
+        colorBackGround: Color,
+        navigation: ()->Unit
     ) {
         Row(
             modifier = modifier
@@ -301,9 +234,7 @@ class DashboardFragment : Fragment() {
                 .height(12.0.hp())
                 .background(color = colorBackGround, shape = MaterialTheme.shapes.medium)
                 .clickable {
-//                    Navigation
-//                        .findNavController(view = view)
-//                        .navigate(idDestination)
+                    navigation()
                 },
             horizontalArrangement = Arrangement.spacedBy(10.0.wp(), Alignment.Start),
             verticalAlignment = Alignment.CenterVertically,

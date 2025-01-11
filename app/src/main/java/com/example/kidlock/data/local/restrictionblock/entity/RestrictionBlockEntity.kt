@@ -9,13 +9,16 @@ import com.example.kidlock.data.local.generic.EntityAbstract
 data class RestrictionBlockEntity(
     @PrimaryKey
     @ColumnInfo(name = "block_id")
-    val blockId: String = "",
+    var blockId: String = "",
 
     @ColumnInfo(name = "type_block")
-    val typcBlock: String = "",
+    var typeBlock: String = "",
 
     @ColumnInfo(name = "block_infor")
-    val blockInfor: String= ""
+    var blockInfor: String= "",
+
+    @ColumnInfo(name = "image_by_base64")
+    var image: String = " "
 ): EntityAbstract(){
     override fun getNameTable(): String = "restriction_block"
 
@@ -24,4 +27,6 @@ data class RestrictionBlockEntity(
     fun getNameTypeBlockColum(): String = "type_block"
 
     fun getNameBlockInfor(): String = "block_infor"
+
+    fun getNameImage(): String = "image_by_base64"
 }

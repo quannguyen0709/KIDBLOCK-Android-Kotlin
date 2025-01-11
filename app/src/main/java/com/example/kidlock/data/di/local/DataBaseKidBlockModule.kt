@@ -7,6 +7,7 @@ import com.example.kidlock.data.local.historyaction.dao.HistoryActionDao
 import com.example.kidlock.data.local.kiddevice.dao.KidDeviceDao
 import com.example.kidlock.data.local.kidinfor.dao.KidInforDao
 import com.example.kidlock.data.local.parent.dao.ParentDao
+import com.example.kidlock.data.local.restrictionblock.dao.RestrictionBlockDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -49,5 +50,10 @@ object DataBaseKidBlockModule {
     @Provides
     fun provideHistoryActionDao( database: KidBlockDatabase):HistoryActionDao{
         return database.historyActionDao()
+    }
+    @Singleton
+    @Provides
+    fun provideRestrictionBlockDao(database: KidBlockDatabase): RestrictionBlockDao{
+        return  database.restrictionBlockDao()
     }
 }

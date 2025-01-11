@@ -9,6 +9,8 @@ import com.example.kidlock.data.local.kidinfor.dao.QueryKidInfor
 import com.example.kidlock.data.local.kidinfor.entity.KidInforEntity
 import com.example.kidlock.data.local.parent.dao.QueryParent
 import com.example.kidlock.data.local.parent.entity.ParentUserEntity
+import com.example.kidlock.data.local.restrictionblock.dao.QueryRestrictionBlock
+import com.example.kidlock.data.local.restrictionblock.entity.RestrictionBlockEntity
 import com.example.kidlock.utils.sqlquery.QueryBuilderImpl
 import com.example.kidlock.utils.sqlquery.QueyBuilder
 import dagger.Binds
@@ -66,6 +68,12 @@ class QueryKidBlockModlue {
     @Provides
     fun bindsQueryHistoryActionOfKidEntity(queryBuilderImpl: QueryBuilderImpl): QueryHistoryActionOfKid{
         return QueryHistoryActionOfKid(HistoryActionOfKidEntity(), queryBuilderImpl)
+    }
+
+    @Singleton
+    @Provides
+    fun binsQueryRestrictionBlockEntity(queryBuilderImpl: QueryBuilderImpl): QueryRestrictionBlock{
+        return QueryRestrictionBlock(RestrictionBlockEntity(), queryBuilderImpl)
     }
 
 

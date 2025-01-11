@@ -7,7 +7,8 @@ import com.example.kidlock.data.local.parent.dao.QueryParent
 import com.example.kidlock.data.local.parent.entity.ParentUserEntity
 import com.example.kidlock.data.local.parent.mapper.toDomain
 import com.example.kidlock.data.local.parent.mapper.toEnitity
-import com.example.kidlock.domain.kidlock.data.ParentUser
+import com.example.kidlock.domain.model.ParentUser
+import com.example.kidlock.domain.repository.ParentUserRepositoryDomain
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
@@ -17,7 +18,7 @@ import javax.inject.Inject
 class ParentRepositoryImpl @Inject constructor (
     val parentDao: ParentDao,
     val queryParent: QueryParent
-): ParentRepositoryData {
+): ParentUserRepositoryDomain {
 
     //@Throws(RuntimeException::class)
     override suspend fun submit(instance: ParentUser) {

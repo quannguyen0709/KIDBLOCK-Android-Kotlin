@@ -1,10 +1,8 @@
 package com.example.kidlock.data.local.parent.mapper
 
 import com.example.kidlock.data.local.parent.entity.ParentUserEntity
-import com.example.kidlock.domain.kidlock.data.KidUserInfor
-import com.example.kidlock.domain.kidlock.data.ParentUser
+import com.example.kidlock.domain.model.ParentUser
 import com.example.kidlock.utils.mapper.mapping
-import kotlin.reflect.full.memberProperties
 
 fun ParentUser.toEnitity():ParentUserEntity{
     val mapping: Map<String, String> = mapOf(
@@ -19,7 +17,7 @@ fun ParentUser.toEnitity():ParentUserEntity{
 
     return parentUserEntity
 }
-fun ParentUserEntity.toDomain(): ParentUser{
+fun ParentUserEntity.toDomain(): ParentUser {
     val mapping: Map<String, String> = mapOf(
          "idParent" to "id" ,
         "name" to "name",

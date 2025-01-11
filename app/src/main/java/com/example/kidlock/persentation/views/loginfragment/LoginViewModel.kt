@@ -1,23 +1,12 @@
 package com.example.kidlock.persentation.views.loginfragment
 
-import android.util.Patterns
-import android.view.View
-import android.view.WindowInsets
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.rememberUpdatedState
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.kidlock.data.local.parent.mapper.toEnitity
-import com.example.kidlock.domain.kidlock.data.ParentUser
-import com.example.kidlock.domain.kidlock.repository.parent.ParentUserRepositoryDomain
+import com.example.kidlock.domain.model.ParentUser
+import com.example.kidlock.domain.repository.ParentUserRepositoryDomain
 import com.example.kidlock.persentation.views.signup.compose.EmailUser
-import com.example.kidlock.persentation.views.signup.compose.NameUser
 import com.example.kidlock.persentation.views.signup.compose.PasswordUser
 import com.example.kidlock.persentation.views.signup.compose.TypeInput
 import com.example.kidlock.persentation.views.signup.compose.TypeTextInputVaild
@@ -35,7 +24,7 @@ import java.util.UUID
 import javax.inject.Inject
 
 @HiltViewModel
-class LoginViewModel @Inject constructor(val repositoryParentUserService: ParentUserRepositoryDomain, val testing : TestHiltClass) : ViewModel() {
+class LoginViewModel @Inject constructor( val testing : TestHiltClass) : ViewModel() {
     val checkLoginCorrect : MutableLiveData<Boolean> = MutableLiveData<Boolean>(true)
     val typeTextInputVaild :Map<TypeInput,TypeTextInputVaild> = mapOf(
         TypeInput.EMAIL_USER to EmailUser(),
@@ -99,10 +88,10 @@ class LoginViewModel @Inject constructor(val repositoryParentUserService: Parent
 
 
          viewModelScope.launch  (Dispatchers.IO) {
-            check  = async {
-                repositoryParentUserService.createParentUser(parentUser)
-            }.await()
-            println(check)
+//            check  = async {
+//                repositoryParentUserService.createParentUser(parentUser)
+//            }.await()
+//            println(check)
          }
     }
 

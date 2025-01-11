@@ -20,11 +20,12 @@ data class HistoryActionOfKidEntity(
     @ColumnInfo(name = "kid_device_id")
     var kidDeviceId: String = "",
 
-    @ColumnInfo(name = "time_unix_epoch")
-    var timeUnix:String = "",
+    @ColumnInfo(name = "time_unix_epoch_day")
+    var timeUnixDay:String = "",
 
-    @ColumnInfo(name = "time_human_readable")
-    var timeFormatter: Date = Date(2024, 10, 30),
+    @ColumnInfo(name = "time_unix_epoch_hr")
+    //pattern yy-MMMM-dd
+    var timeUnixHours: String = "",
 
     @ColumnInfo(name= "block_id")
     val blockInfor: String = "",
@@ -33,7 +34,7 @@ data class HistoryActionOfKidEntity(
     override fun getNamePrimaryKey(): String = "id"
     fun getNameKidInforColum(): String = "kid_infor_id"
     fun getNameKidDeviceColum(): String = "kid_device_id"
-    fun getNameTimeUnixColum(): String = "time_unix_epoch"
-    fun getNameTimeFormatterColum(): String = "time_human_readable"
+    fun getNameTimeUnixDayColum(): String = "time_unix_epoch_day"
+    fun getNameTimeUnixHoursColum(): String = "time_unix_epoch_hr"
     fun getNameBlockIdColum(): String = "block_id"
 }

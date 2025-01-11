@@ -6,6 +6,7 @@ import androidx.navigation.createGraph
 import androidx.navigation.fragment.fragment
 import com.example.kidlock.persentation.views.dashboard.DashboardFragment
 import com.example.kidlock.persentation.views.forgotpassword.ForgotPassFragment
+import com.example.kidlock.persentation.views.kiddevice.KidDeviceFragment
 import com.example.kidlock.persentation.views.loginfragment.LoginFragment
 import com.example.kidlock.persentation.views.mainscreen.MainScreen
 import com.example.kidlock.persentation.views.setting.SettingsFragment
@@ -36,6 +37,7 @@ class NavigationApplication constructor(val navController: NavController) : Main
             fragment<SettingsFragment>(ApplicationPages.SETTING_PARENT) {
 
             }
+            fragment<KidDeviceFragment>(ApplicationPages.KID_DEVICE)
         }
         return navController
     }

@@ -15,7 +15,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.text.KeyboardActions
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.IconButton
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
@@ -45,17 +44,14 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.setFragmentResultListener
 import androidx.lifecycle.MutableLiveData
-import androidx.navigation.findNavController
 import com.example.kidlock.R
-import com.example.kidlock.domain.kidlock.data.ParentUser
+import com.example.kidlock.domain.model.ParentUser
 import com.example.kidlock.persentation.navigation.ApplicationPages
 import com.example.kidlock.persentation.navigation.popStack
 import com.example.kidlock.persentation.utils.SizeScreen.hp
 import com.example.kidlock.persentation.utils.SizeScreen.wp
 import com.example.kidlock.persentation.views.loginfragment.LoginViewModel
 import com.example.kidlock.persentation.views.mainscreen.MainScreenViewModel
-import com.example.kidlock.persentation.views.signup.compose.EmailUser
-import com.example.kidlock.persentation.views.signup.compose.TypeTextInputVaild
 import com.example.kidlock.persentation.views.signup.compose.textInput
 import com.example.kidlock.theme.KidlockTheme
 import com.example.kidlock.theme.KidlockTheme.color

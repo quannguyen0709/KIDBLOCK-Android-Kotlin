@@ -5,5 +5,5 @@ import com.example.kidlock.data.local.generic.DaoGeneric
 import com.example.kidlock.data.local.restrictionblock.entity.RestrictionBlockEntity
 
 @Dao
-abstract class RestrictionBlockDao : DaoGeneric<RestrictionBlockEntity>() {
+public abstract class RestrictionBlockDao : DaoGeneric<RestrictionBlockEntity>() {
 }

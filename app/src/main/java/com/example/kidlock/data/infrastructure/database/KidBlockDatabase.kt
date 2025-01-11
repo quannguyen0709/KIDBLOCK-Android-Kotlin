@@ -13,12 +13,15 @@ import com.example.kidlock.data.local.kidinfor.dao.KidInforDao
 import com.example.kidlock.data.local.kidinfor.entity.KidInforEntity
 import com.example.kidlock.data.local.parent.dao.ParentDao
 import com.example.kidlock.data.local.parent.entity.ParentUserEntity
+import com.example.kidlock.data.local.restrictionblock.dao.RestrictionBlockDao
+import com.example.kidlock.data.local.restrictionblock.entity.RestrictionBlockEntity
 
-@Database(entities = [ParentUserEntity::class, KidInforEntity::class, HistoryActionOfKidEntity::class, KidDeviceEntity::class], version = 1, exportSchema = false)
+@Database(entities = [ParentUserEntity::class, KidInforEntity::class, HistoryActionOfKidEntity::class, KidDeviceEntity::class, RestrictionBlockEntity::class], version = 1, exportSchema = false)
 @TypeConverters(Converters::class)
 abstract class KidBlockDatabase : RoomDatabase() {
     abstract fun parentDao():ParentDao
     abstract fun kidInforDao():KidInforDao
     abstract fun kidDeviceDao():KidDeviceDao
     abstract fun historyActionDao():HistoryActionDao
+    abstract fun restrictionBlockDao():RestrictionBlockDao
 }
